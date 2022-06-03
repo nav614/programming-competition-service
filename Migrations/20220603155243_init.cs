@@ -4,7 +4,7 @@
 
 namespace ProgrammingCompetitionService.Migrations
 {
-    public partial class Restore1 : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

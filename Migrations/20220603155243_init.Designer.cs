@@ -11,8 +11,8 @@ using ProgrammingCompetitionService.Models;
 namespace ProgrammingCompetitionService.Migrations
 {
     [DbContext(typeof(PCContext))]
-    [Migration("20220601141654_RenameTasksColumns")]
-    partial class RenameTasksColumns
+    [Migration("20220603155243_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -26,15 +26,16 @@ namespace ProgrammingCompetitionService.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CpuTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Language")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Memory")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ProgrammingLanguage")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Script")
@@ -43,12 +44,6 @@ namespace ProgrammingCompetitionService.Migrations
 
                     b.Property<Guid>("TaskItemId")
                         .HasColumnType("TEXT");
-
-                    b.Property<byte[]>("Timestamp")
-                        .IsConcurrencyToken()
-                        .IsRequired()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("BLOB");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("TEXT");
@@ -62,14 +57,10 @@ namespace ProgrammingCompetitionService.Migrations
                     b.ToTable("CompletedTasks");
                 });
 
-            modelBuilder.Entity("ProgrammingCompetitionService.Models.TaskItem", b =>
+            modelBuilder.Entity("ProgrammingCompetitionService.Models.TaskDetails", b =>
                 {
-                    b.Property<Guid>("TaskItemId")
+                    b.Property<Guid>("TaskDetailsId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Language")
@@ -80,15 +71,35 @@ namespace ProgrammingCompetitionService.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Output")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<Guid>("TaskItemId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("UserScript")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("TaskDetailsId");
+
+                    b.HasIndex("TaskItemId");
+
+                    b.ToTable("TaskDetails");
+                });
+
+            modelBuilder.Entity("ProgrammingCompetitionService.Models.TaskItem", b =>
+                {
+                    b.Property<Guid>("TaskItemId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -141,6 +152,17 @@ namespace ProgrammingCompetitionService.Migrations
                     b.Navigation("TaskItem");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("ProgrammingCompetitionService.Models.TaskDetails", b =>
+                {
+                    b.HasOne("ProgrammingCompetitionService.Models.TaskItem", "TaskItem")
+                        .WithMany()
+                        .HasForeignKey("TaskItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TaskItem");
                 });
 #pragma warning restore 612, 618
         }
