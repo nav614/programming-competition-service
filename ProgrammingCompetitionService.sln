@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 25.0.1700.0
+VisualStudioVersion = 25.0.1700.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgrammingCompetitionService", "ProgrammingCompetitionService\ProgrammingCompetitionService.csproj", "{99400FC7-F88F-4D29-AEB6-63146B97C685}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProgrammingCompetitionService", "ProgrammingCompetitionService.csproj", "{0F35E286-503E-42BB-81FA-392A3EEE78EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{99400FC7-F88F-4D29-AEB6-63146B97C685}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{99400FC7-F88F-4D29-AEB6-63146B97C685}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{99400FC7-F88F-4D29-AEB6-63146B97C685}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{99400FC7-F88F-4D29-AEB6-63146B97C685}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F35E286-503E-42BB-81FA-392A3EEE78EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F35E286-503E-42BB-81FA-392A3EEE78EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F35E286-503E-42BB-81FA-392A3EEE78EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F35E286-503E-42BB-81FA-392A3EEE78EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {D4A710B9-D00E-4C6C-95B8-859479890075}
+		SolutionGuid = {2B6CC97A-0F2E-4406-B1D5-A9F72E8B6F47}
 	EndGlobalSection
 EndGlobal
