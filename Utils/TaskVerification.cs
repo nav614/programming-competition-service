@@ -15,7 +15,7 @@ namespace ProgrammingCompetitionService.Utils
 
             for (int i = 0; i < jdoodleOutArr.Length; i++)
             {
-                if (jdoodleOutArr[i].Trim() != taskOutArr[i].Trim())
+                if (jdoodleOutArr[i].Trim().ToLower() != taskOutArr[i].Trim().ToLower())
                 {
                     return false;
                 }

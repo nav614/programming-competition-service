@@ -53,8 +53,9 @@ namespace ProgrammingCompetitionService.Controllers
                 TaskItemId = taskDetailsNew.TaskItemId,
                 MainScript = taskDetailsNew.MainScript,
                 UserScript = taskDetailsNew.UserScript,
+                Input = taskDetailsNew.Input,
                 Output = taskDetailsNew.Output,
-                Language = taskDetailsNew.Language
+                Language = taskDetailsNew.Language,
             };
 
             _context.TaskDetails.Add(taskDetails);

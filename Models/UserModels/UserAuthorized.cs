@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace ProgrammingCompetitionService.Models
 {
-	public class UserAuthorized
+	public class UserAuthorized: IUser
 	{
 		public Guid UserId { get; set; }
 		public string UserName { get; set; }

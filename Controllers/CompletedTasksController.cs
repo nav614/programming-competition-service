@@ -50,7 +50,7 @@ namespace ProgrammingCompetitionService.Controllers
                          {
                              Username = users.UserName,
                              Score = ctg.Count(),
-                             CompletedTasks = string.Join(',', (from c in ctg
+                             CompletedTasks = string.Join(", ", (from c in ctg
                                                                 join t in _context.Tasks.ToList() on c.TaskItemId equals t.TaskItemId
                                                                 select t.Name).ToArray())
 

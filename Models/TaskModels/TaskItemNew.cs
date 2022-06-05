@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace ProgrammingCompetitionService.Models
 {
-    public class TaskItemNew
+    public class TaskItemNew: ITaskItem
     {        
         [Required]
         public string Name { get; set; }
