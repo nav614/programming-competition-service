@@ -1,4 +1,4 @@
-# Web Service for Programming Competition Game
+# Web Service for Programming Competition Game v0.1.1
 
 ![swagger only(1)](https://user-images.githubusercontent.com/48523627/171907713-56846416-062c-4fd9-8332-bb3ea2904ed6.gif)
 
