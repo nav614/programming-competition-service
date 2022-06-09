@@ -5,6 +5,7 @@ using ProgrammingCompetitionService.Models;
 using ProgrammingCompetitionService.Services;
 using ProgrammingCompetitionService.Intrerfaces;
 using ProgrammingCompetitionService.Repositories;
+using ProgrammingCompetitionService.Middleware;
 using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,7 @@ builder.Services.AddTransient<ITasksRepository, TasksRepository>();
 builder.Services.AddTransient<ITaskDetailsRepository, TaskDetailsRepository>();
 builder.Services.AddTransient<IAuthRepository, AuthRepository>();
 builder.Services.AddTransient<ICompletedTasksRepository, CompletedTasksRepository>();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -30,7 +32,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new() { Title = "Programming Competition", Version = "v1" });
+    c.SwaggerDoc("v1", new() { Title = "Programming Competition", Version = "v0.2.0" });
     c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
     {
         Description = "Standart Authorization header using the Bearer scheme (\"bearer {token}\")",
@@ -71,6 +73,8 @@ app.UseCors(builder=>builder
 .AllowAnyOrigin()
 .AllowAnyMethod()
 .AllowAnyHeader());
+
+app.UseMiddleware<RequestLoggingMiddleware>();
 
 app.MapControllers();
 

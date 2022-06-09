@@ -34,6 +34,7 @@
     <None Remove="tasks" />
     <None Remove="Intrerfaces\" />
     <None Remove="Repositories\" />
+    <None Remove="Middleware\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5" />
@@ -67,5 +68,6 @@
     <Folder Include="Utils\" />
     <Folder Include="Intrerfaces\" />
     <Folder Include="Repositories\" />
+    <Folder Include="Middleware\" />
   </ItemGroup>
 </Project>
