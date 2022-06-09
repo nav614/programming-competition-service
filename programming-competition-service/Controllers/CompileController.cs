@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ProgrammingCompetitionService.Models;
+using ProgrammingCompetitionService.Intrerfaces;
 using ProgrammingCompetitionService.Models.JdoodleModels;
 using ProgrammingCompetitionService.Services;
 using ProgrammingCompetitionService.Utils;
@@ -16,14 +17,16 @@ namespace ProgrammingCompetitionService.Controllers
     [Authorize]
     public class CompileController : ControllerBase
     {
-        private readonly PCContext _context;
+        private readonly ITaskDetailsRepository _taskDetailsRepository;
+        private readonly ICompletedTasksRepository _completedTasksRepository;
         private readonly IConfiguration _configuration;
         private readonly JdoodleService _jdoodleService;
 
 
-        public CompileController(PCContext context, IConfiguration configuration, JdoodleService jdoodleService)
+        public CompileController(ITaskDetailsRepository taskDetailsRepository, ICompletedTasksRepository completedTasksRepository, IConfiguration configuration, JdoodleService jdoodleService)
         {
-            _context = context;
+            _taskDetailsRepository = taskDetailsRepository;
+            _completedTasksRepository = completedTasksRepository;
             _configuration = configuration;
             _jdoodleService = jdoodleService;
         }
@@ -36,7 +39,7 @@ namespace ProgrammingCompetitionService.Controllers
                 return BadRequest();
             }
 
-            var taskDetails = _context.TaskDetails.FirstOrDefault(x=>x.TaskDetailsId == taskToCompile.TaskDetailsId);
+            var taskDetails = await _taskDetailsRepository.GetById(taskToCompile.TaskDetailsId);
             if (taskDetails == null)
             {
                 return BadRequest("Task details not found.");
@@ -98,8 +101,7 @@ namespace ProgrammingCompetitionService.Controllers
                 CpuTime = jdoodleOutput.CpuTime
             };
 
-            _context.CompletedTasks.Add(completedTaskItem);
-            await _context.SaveChangesAsync();
+           await _completedTasksRepository.Add(completedTaskItem);
         }
     }
 }

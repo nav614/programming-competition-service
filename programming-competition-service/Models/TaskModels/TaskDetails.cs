@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ProgrammingCompetitionService.Models
 {
-	public class TaskDetails: ITaskDetails
+	public class TaskDetails
 	{
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public Guid TaskDetailsId { get; set; }

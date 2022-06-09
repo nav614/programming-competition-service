@@ -3,12 +3,19 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using ProgrammingCompetitionService.Models;
 using ProgrammingCompetitionService.Services;
+using ProgrammingCompetitionService.Intrerfaces;
+using ProgrammingCompetitionService.Repositories;
 using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<PCContext>();
+builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddTransient<ITasksRepository, TasksRepository>();
+builder.Services.AddTransient<ITaskDetailsRepository, TaskDetailsRepository>();
+builder.Services.AddTransient<IAuthRepository, AuthRepository>();
+builder.Services.AddTransient<ICompletedTasksRepository, CompletedTasksRepository>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -20,6 +27,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = false,
         };
     });
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "Programming Competition", Version = "v1" });
@@ -32,6 +40,7 @@ builder.Services.AddSwaggerGen(c =>
     });
     c.OperationFilter<SecurityRequirementsOperationFilter>();
 });
+
 builder.Services.AddHttpClient<JdoodleService>(httpClient =>
 {
     httpClient.BaseAddress = new Uri(builder.Configuration.GetSection("AppSettings:Jdoodle:BaseAdress").Value);

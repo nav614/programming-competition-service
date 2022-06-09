@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ProgrammingCompetitionService.Intrerfaces;
 using ProgrammingCompetitionService.Models;
 
 namespace ProgrammingCompetitionService.Controllers
@@ -15,24 +16,21 @@ namespace ProgrammingCompetitionService.Controllers
     [Authorize]
     public class TasksController : ControllerBase
     {
-        private readonly PCContext _context;
+        private readonly ITasksRepository _repository;
 
-        public TasksController(PCContext context)
+        public TasksController(ITasksRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         // GET: api/Tasks
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskItem>>> GetTasks()
         {
-            if (_context.Tasks == null)
-            {
-                return NotFound();
-            }
-            return await _context.Tasks.ToListAsync();
-        }
+            var tasks = await _repository.GetAll();
 
+            return Ok(tasks);
+        }
 
         // POST: api/Tasks
         [HttpPost, Authorize(Roles = "admin")]
@@ -43,15 +41,13 @@ namespace ProgrammingCompetitionService.Controllers
                 return BadRequest();
             }
 
-            if (_context.Tasks == null)
+            TaskItem taskItem = new TaskItem()
             {
-                return Problem("Tasks is null.");
-            }
+                Name = taskItemNew.Name,
+                Description = taskItemNew.Description
+            };
 
-            TaskItem taskItem = new TaskItem() { Name = taskItemNew.Name, Description = taskItemNew.Description };
-
-            _context.Tasks.Add(taskItem);
-            await _context.SaveChangesAsync();
+            await _repository.Add(taskItem);
 
             return Ok(taskItem);
         }
@@ -60,18 +56,12 @@ namespace ProgrammingCompetitionService.Controllers
         [HttpDelete("{id}"), Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteTaskItem(Guid id)
         {
-            if (_context.Tasks == null)
-            {
-                return NotFound();
-            }
-            var taskItem = await _context.Tasks.FindAsync(id);
+            var taskItem = await _repository.Remove(id);
+
             if (taskItem == null)
             {
                 return NotFound();
             }
-
-            _context.Tasks.Remove(taskItem);
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }

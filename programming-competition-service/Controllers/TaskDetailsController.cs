@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProgrammingCompetitionService.Models;
+using ProgrammingCompetitionService.Intrerfaces;
 
 namespace ProgrammingCompetitionService.Controllers
 {
@@ -15,22 +16,19 @@ namespace ProgrammingCompetitionService.Controllers
     [Authorize]
     public class TaskDetailsController : ControllerBase
     {
-        private readonly PCContext _context;
+        private readonly ITaskDetailsRepository _repository;
 
-        public TaskDetailsController(PCContext context)
+        public TaskDetailsController(ITaskDetailsRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         // GET: api/TaskDetails/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<TaskDetails>>> GetTaskDetails(Guid id)
+        [HttpGet("{taskItemId}")]
+        public async Task<ActionResult<IEnumerable<TaskDetails>>> GetTaskDetails(Guid taskItemId)
         {
-            if (_context.TaskDetails == null)
-            {
-                return NotFound();
-            }
-            return await _context.TaskDetails.Where(x => x.TaskItemId == id).ToListAsync();
+            var taskDetails = await _repository.GetByTaskItemId(taskItemId);
+            return Ok(taskDetails);
         }
 
 
@@ -43,11 +41,6 @@ namespace ProgrammingCompetitionService.Controllers
                 return BadRequest();
             }
 
-            if (_context.TaskDetails == null)
-            {
-                return Problem("askDetails is null.");
-            }
-
             TaskDetails taskDetails = new TaskDetails()
             {
                 TaskItemId = taskDetailsNew.TaskItemId,
@@ -58,8 +51,7 @@ namespace ProgrammingCompetitionService.Controllers
                 Language = taskDetailsNew.Language,
             };
 
-            _context.TaskDetails.Add(taskDetails);
-            await _context.SaveChangesAsync();
+            await _repository.Add(taskDetails);
 
             return Ok(taskDetails);
         }
@@ -68,18 +60,13 @@ namespace ProgrammingCompetitionService.Controllers
         [HttpDelete("{id}"), Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteTaskDetails(Guid id)
         {
-            if (_context.TaskDetails == null)
-            {
-                return NotFound();
-            }
-            var taskDetails = await _context.TaskDetails.FindAsync(id);
+
+            var taskDetails = await _repository.Remove(id);
+
             if (taskDetails == null)
             {
                 return NotFound();
             }
-
-            _context.TaskDetails.Remove(taskDetails);
-            await _context.SaveChangesAsync();
 
             return NoContent();
         }

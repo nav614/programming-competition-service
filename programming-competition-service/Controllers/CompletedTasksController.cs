@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProgrammingCompetitionService.Models;
+using ProgrammingCompetitionService.Intrerfaces;
 
 namespace ProgrammingCompetitionService.Controllers
 {
@@ -15,44 +16,46 @@ namespace ProgrammingCompetitionService.Controllers
     [Authorize]
     public class CompletedTasksController : ControllerBase
     {
-        private readonly PCContext _context;
+        private readonly ICompletedTasksRepository _completedTasksRepository;
+        private readonly IAuthRepository _authRepository;
+        private readonly ITasksRepository _tasksRepository;
 
-        public CompletedTasksController(PCContext context)
+
+        public CompletedTasksController(ICompletedTasksRepository completedTasksRepository, IAuthRepository authRepository, ITasksRepository tasksRepository)
         {
-            _context = context;
+            _completedTasksRepository = completedTasksRepository;
+            _authRepository = authRepository;
+            _tasksRepository = tasksRepository;
         }
 
         // GET: api/CompletedTasks
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CompletedTaskItem>>> GetCompletedTasks()
         {
-            if (_context.CompletedTasks == null)
-            {
-                return NotFound();
-            }
-            return await _context.CompletedTasks.ToListAsync();
+            var result = await _completedTasksRepository.GetAll();
+
+            return Ok(result);
         }
 
         // GET: api/topthree
         [HttpGet("topthree")]
         public async Task<ActionResult<IEnumerable<UserResults>>> GetTopThree()
         {
-            if (_context.CompletedTasks == null)
-            {
-                return NotFound();
-            }
+            var taskList = await _tasksRepository.GetAll();
+            var completedTaskList = await _completedTasksRepository.GetAll();
+            var userList = await _authRepository.GetAll();
 
-            var query = (from completedTasks in _context.CompletedTasks.ToList()
+            var query = (from completedTasks in completedTaskList
                          group completedTasks by completedTasks.UserId into ctg
-                         join users in _context.Users.ToList() on ctg.FirstOrDefault().UserId equals users.UserId
+                         join users in userList on ctg.FirstOrDefault().UserId equals users.UserId
                          orderby ctg.Count() descending
                          select new UserResults
                          {
                              Username = users.UserName,
                              Score = ctg.Count(),
                              CompletedTasks = string.Join(", ", (from c in ctg
-                                                                join t in _context.Tasks.ToList() on c.TaskItemId equals t.TaskItemId
-                                                                select t.Name).ToArray())
+                                                                 join t in taskList on c.TaskItemId equals t.TaskItemId
+                                                                 select t.Name).ToArray())
 
                          }).Take(3);
 

@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace ProgrammingCompetitionService.Models
 {
-    public class TaskItemNew: ITaskItem
-    {        
+    public class TaskItem
+    {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public Guid TaskItemId { get; set; }
         [Required]
         public string Name { get; set; }
         [Required]

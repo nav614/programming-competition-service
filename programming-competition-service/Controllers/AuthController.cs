@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProgrammingCompetitionService.Models;
+using ProgrammingCompetitionService.Intrerfaces;
 
 namespace ProgrammingCompetitionService.Controllers
 {
@@ -17,12 +18,12 @@ namespace ProgrammingCompetitionService.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly PCContext _context;
+        private readonly IAuthRepository _repository;
         private readonly IConfiguration _configuration;
 
-        public AuthController(PCContext context, IConfiguration configuration)
+        public AuthController(IAuthRepository repository, IConfiguration configuration)
         {
-            _context = context;
+            _repository = repository;
             _configuration = configuration;
         }
 
@@ -34,7 +35,7 @@ namespace ProgrammingCompetitionService.Controllers
                 return BadRequest();
             }
 
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName.ToLower() == userLogin.UserName.ToLower());
+            var user = await _repository.GetByUserName(userLogin.UserName);
 
             if (user != null)
             {
@@ -45,8 +46,7 @@ namespace ProgrammingCompetitionService.Controllers
 
             user = new User() { UserName = userLogin.UserName, PasswordHash = passwordHash, PasswordSalt = passwordSalt };
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            await _repository.Add(user);
 
             return Ok();
         }
@@ -59,7 +59,7 @@ namespace ProgrammingCompetitionService.Controllers
                 return BadRequest();
             }
 
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.UserName.ToLower() == userLogin.UserName.ToLower());
+            var user = await _repository.GetByUserName(userLogin.UserName);
 
             if (user == null || !VerifyPasswordHash(userLogin.Password, user.PasswordHash, user.PasswordSalt))
             {

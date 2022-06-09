@@ -4,9 +4,7 @@ namespace ProgrammingCompetitionService.Models
 {
     public class PCContext : DbContext
     {
-        public PCContext(DbContextOptions<PCContext> options)
-    : base(options)
-        { }
+        public PCContext(DbContextOptions<PCContext> options) : base(options) { }
 
         public DbSet<TaskItem> Tasks { get; set; }
         public DbSet<User> Users { get; set; }

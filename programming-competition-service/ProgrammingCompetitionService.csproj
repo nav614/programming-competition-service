@@ -4,8 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <ReleaseVersion>0.1.1</ReleaseVersion>
-    <SynchReleaseVersion>false</SynchReleaseVersion>
+    <ReleaseVersion>0.2.0</ReleaseVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -33,6 +32,8 @@
     <None Remove="Microsoft.AspNetCore.Http.Abstractions" />
     <None Remove="Utils\" />
     <None Remove="tasks" />
+    <None Remove="Intrerfaces\" />
+    <None Remove="Repositories\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5" />
@@ -64,5 +65,7 @@
     <Folder Include="Models\TaskModels\" />
     <Folder Include="Services\" />
     <Folder Include="Utils\" />
+    <Folder Include="Intrerfaces\" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
 </Project>
