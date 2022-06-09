@@ -16,5 +16,5 @@ Open [http://localhost:7025](http://localhost:7025) to view it in your browser.
 
 ## Database
 
-`SQLite` database stored in `.Data/` 
+`SQLite` database stored in `./programming-competition-service/Data/` 
 
