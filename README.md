@@ -1,4 +1,4 @@
-# Web Service for Programming Competition Game v0.1.1
+# Web Service for Programming Competition Game v0.2.0
 
 ![swagger only(1)](https://user-images.githubusercontent.com/48523627/171907713-56846416-062c-4fd9-8332-bb3ea2904ed6.gif)
 
@@ -8,7 +8,7 @@
 
 ## Available Scripts
 
-In the project directory, you can run:
+In the project directory `./programming-competition-service/`, you can run:
 
 ### `dotnet run`
 
@@ -16,5 +16,5 @@ Open [http://localhost:7025](http://localhost:7025) to view it in your browser.
 
 ## Database
 
-`SQLite` database stored in `.Data/` 
+`SQLite` database stored in `./programming-competition-service/Data/` 
 
